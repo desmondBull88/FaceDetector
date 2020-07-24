@@ -21,6 +21,15 @@ while True:
 
     threshFrame = cv2.dilate(threshFrame, None, iterations=2)
 
+    (cnts, _) = cv2.findContours(threshFrame.copy(),
+                                 cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    for countour in cnts:
+        if cv2.contourArea(countour) < 1000:
+            continue
+        (x, y, w, h) = cv2.boundingRect(countour)
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 3)
+
     cv2.imshow("Capturing", frame)
 
     key = cv2.waitKey(1)
